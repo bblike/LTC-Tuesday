@@ -1,6 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
-f = open('week5/T200V3.dat')
+f = open('week5/T80V3.dat')
 data = f.readlines()
 length = len(data)
 
@@ -23,6 +23,8 @@ fig1 = plt.figure()
 ax1 = fig1.add_axes([0.1, 0.1, 0.8, 0.8])
 ax1.set_title("V-I graph")
 ax1.plot(V, I, marker = "x", label = "I-V plot")
+ax1.set_xlabel("voltage/V")
+ax1.set_ylabel("current/A")
 fig1.show()
 """
 fig1 = plt.figure()
