@@ -171,13 +171,13 @@ if __name__ == '__main__':
     mail_host = "smtp.gmail.com"
     mail_sender = "lzjgnh2002@gmail.com"
     mail_license = "zbdnlsqoqrlveppn"
-    mail_receivers = ["sample_email@gmail.com"]
+    mail_receivers = ["lzjgnh2002@gmail.com"]
 
     mm = MIMEMultipart('related')
 
     subject_content = """experiment results Low Temperature conductivity"""
     mm["From"] = "Li Zhejun<lzjgnh2002@gmail.com>"
-    mm['To'] = "sample<sample_email@gmail.com>"
+    mm['To'] = "Li Zhejun<lzjgnh2002@gmail.com>"
     mm['Subject'] = Header(subject_content, 'utf-8')
 
     current_time = datetime.now()

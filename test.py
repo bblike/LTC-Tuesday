@@ -7,15 +7,15 @@ files = os.listdir(path)
 s = []
 counter = 0
 file_length = len(files)
-data = np.arange(file_length)
-fig1 = plt.figure()
+data = []
+fig1 = plt.figure(figsize=(10,10))
+file_length = len(files)
 for file in files:
-    file_length = len(files)
     if file[-6:] == "V1.dat":
         f = open("week5./{}".format(file))
         data = f.readlines()
         counter += 1
-
+        print(counter)
 
         length = len(data)
 
@@ -28,21 +28,21 @@ for file in files:
             string = data[i]
             T[i], V[i], I[i], R[i] = string.split(" ")
 
-        print(T)
+        """print(T)
         print(V)
         print(I)
-        print(R)
-
-        # single graph plots
-
-        ax1 = fig1.add_axes([0.1, 0.1, 0.8, 0.8])
-        ax1.set_xlim(0, 2)
-        ax1.plot(V, I, marker="x", label="I-V plot", color = "random")
+        print(R)"""
 
 
-ax1.set_title("V-I graph of {}".format(counter))
-ax1.set_xlabel("voltage/V")
-ax1.set_ylabel("current/A")
+        plt.plot(V[60:150], R[60:150], marker="", label = "{}".format(counter*10+70))
+
+
+        plt.title("relations between voltage and resistance under different temperature")
+        plt.xlabel("voltage/V")
+        plt.ylabel("Resistance/R")
+        plt.legend()
+    data = []
+
 fig1.show()
 """
         fig1 = plt.figure()
