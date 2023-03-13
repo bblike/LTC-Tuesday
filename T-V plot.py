@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import os
 
-path = r"C:\Users\Li Zhejun\Desktop\LTC-Tuesday\week5"
+path = r"C:\Users\Li Zhejun\Desktop\LTC-Tuesday\week6-super"
 files = os.listdir(path)
 s = []
 counter = 0
@@ -11,10 +11,15 @@ data = []
 fig1 = plt.figure(figsize=(10, 10))
 file_length = len(files)
 use = np.zeros((200,2))
+sign = 0
 flag = 0
 for file in files:
-    if True:
-        f = open("week5./{}".format(file))
+    if file[-6:] == "V3.dat":
+        if file[1:-6] == "210" or file[1:-6] == "220" or file[1:-6] == "230" or file[1:-6] == "240" or file[1:-6] == "250" or file[1:-6] == "260":
+            sign = -1
+        else:
+            sign = 1
+        f = open("week6-super./{}".format(file))
         data = f.readlines()
         counter += 1
         print(counter)
@@ -26,13 +31,15 @@ for file in files:
         I = np.zeros(length)
         R = np.zeros(length - 1)
 
+        V = V * sign
+        R = R * sign
         for i in range(0, length - 1):
             string = data[i]
             T[i], V[i], I[i], R[i] = string.split(" ")
 
         for i in range(0, length - 1):
-            if (I[i]-0.05) < 0.001 and (0.05 - I[i]) < 0.001:
-                use[flag] += [T[i], V[i]]
+            if (I[i]-0.03) < 0.001 and (0.03 - I[i]) < 0.001:
+                use[flag] += [T[i], R[i]]
                 flag += 1
 
 
@@ -54,7 +61,7 @@ for j in range(flag-1):
             yax[i] = yax[i + 1]
             yax[i + 1] = ytemp
 fig1 = plt.figure()
-plt.plot(xax, yax, marker = "x")
+plt.plot(xax[:11], yax[:11], marker = "x")
 plt.show()
 """
 
