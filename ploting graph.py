@@ -63,9 +63,9 @@ result[1] = temp.intercept
 result[2] = temp.stderr
 result[3] = temp.intercept_stderr
 
-xe1 = np.arange(0, 0.06, 0.002)
-ye1 = xe1 * result[0] + result[1]
-plt.plot(xe1,ye1, color = "red")
+xe = np.arange(0, 0.06, 0.002)
+ye = xe * result[0] + result[1]
+plt.plot(xe, ye, color = "red")
 
 temp2 = scps.linregress(I2[:30], R2[:30])
 result2[0] = temp2.slope
@@ -76,7 +76,7 @@ result2[3] = temp2.intercept_stderr
 
 xe2 = np.arange(0, 0.06, 0.002)
 ye2 = xe2 * result2[0] + result2[1]
-plt.plot(xe2,ye2, color = "black")
+plt.plot(xe2, ye2, color = "black")
 
 print(result)
 print(result2)

@@ -15,7 +15,7 @@ narrow_select = ["80", "90", "100", "103", "105", "106", "107", "108", "109"]
 semi_select = [80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260]
 sign = 0
 for file in files:
-    for s in semi_select:
+    for s in narrow_select:
         if file[1:-6] == "210" or file[1:-6] == "220" or file[1:-6] == "230" or file[1:-6] == "240" or file[1:-6] == "250" or file[1:-6] == "260":
             sign = -1
         else:
@@ -46,7 +46,7 @@ for file in files:
             V = V * sign
             R = R * sign
 
-            print(V)
+            #print(V)
             """
             print(V)
             print(I)
