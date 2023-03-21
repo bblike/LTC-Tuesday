@@ -1,91 +1,128 @@
 import numpy as np
 from matplotlib import pyplot as plt
 import os
-
-path = r"C:\Users\Li Zhejun\Desktop\LTC-Tuesday\week6-super"
+import scipy.stats as scps
+path = r"C:\Users\Li Zhejun\Desktop\LTC-Tuesday\week5"
 files = os.listdir(path)
 s = []
 counter = 0
 file_length = len(files)
 data = []
-fig1 = plt.figure(figsize=(10, 10))
-file_length = len(files)
-use = np.zeros((200,2))
+fig1 = plt.figure()
+ax1 = fig1.add_axes([0.1, 0.1, 0.8, 0.8])
+ax1.set_ylabel("Temperature/K")
+ax1.set_xlabel("voltage/V")
+ax1.set_title("T-V plot for silicon at I = 0.05A")
+#ax1.set_xlabel("current/A")
+#ax1.set_ylabel("band gap energy/eV")
+#ax1.set_title("band gap energy relation to current")
+use = np.zeros((2000,2))
 sign = 0
 flag = 0
-for file in files:
-    if file[-6:] == "V3.dat":
-        if file[1:-6] == "210" or file[1:-6] == "220" or file[1:-6] == "230" or file[1:-6] == "240" or file[1:-6] == "250" or file[1:-6] == "260":
-            sign = -1
-        else:
-            sign = 1
-        f = open("week6-super./{}".format(file))
-        data = f.readlines()
-        counter += 1
-        print(counter)
+semi_select = [80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260]
+current_test = []
+current_choose = [0.05]
+for I_choose in current_choose:
+    for l in [3]:
+        for file in files:
+            for s in semi_select:
+                if file[-6:] == "V{}.dat".format(l):
+                    if file[1:-6] == "210" or file[1:-6] == "220" or file[1:-6] == "230" or file[1:-6] == "240" or file[1:-6] == "250" or file[1:-6] == "260":
+                        sign = -1
+                    else:
+                        sign = 1
 
-        length = len(data)
+                    if file =="T{}V{}.dat".format(np.str_(s), l):
+                        f = open("week5./{}".format(file))
+                        data = f.readlines()
+                        counter += 1
+                        print(counter)
 
-        T = np.zeros(length)
-        V = np.zeros(length)
-        I = np.zeros(length)
-        R = np.zeros(length - 1)
+                        length = len(data)
 
-        V = V * sign
-        R = R * sign
-        for i in range(0, length - 1):
-            string = data[i]
-            T[i], V[i], I[i], R[i] = string.split(" ")
+                        T = np.zeros(length)
+                        V = np.zeros(length)
+                        I = np.zeros(length)
+                        R = np.zeros(length)
 
-        for i in range(0, length - 1):
-            if (I[i]-0.03) < 0.001 and (0.03 - I[i]) < 0.001:
-                use[flag] += [T[i], R[i]]
-                flag += 1
+                        for i in range(0, length):
+                            string = data[i]
+                            T[i], V[i], I[i], R[i] = string.split(" ")
+
+                        T = T[T != 0]
+                        V = V[V != 0]
+                        I = I[I != 0]
+                        R = R[R != 0]
+                        V = V * sign
+                        R = R * sign
 
 
-xax = np.zeros(flag)
-yax = np.zeros(flag)
+                        for i in range(0, len(I)):
+                            if (I[i] - I_choose) < 0.002 and (I_choose - I[i]) < 0.002:
+                                use[flag] += [T[i], V[i]]
+                                flag += 1
+        print(flag)
 
-for i in range(flag):
-    xax[i] = use[i][0]
-    yax[i] = use[i][1]
+        xax = np.zeros(flag)
+        yax = np.zeros(flag)
 
-for j in range(flag-1):
-    for i in range(flag-1):
+        for i in range(flag):
+            xax[i] = use[i][0]
+            yax[i] = use[i][1]
 
-        if xax[i] > xax[i+1]:
-            xtemp = xax[i]
-            xax[i] = xax[i+1]
-            xax[i+1] = xtemp
-            ytemp = yax[i]
-            yax[i] = yax[i + 1]
-            yax[i + 1] = ytemp
-fig1 = plt.figure()
-plt.plot(xax[:11], yax[:11], marker = "x")
+        for j in range(flag-1):
+            for i in range(flag-1):
+
+                if xax[i] > xax[i+1]:
+                    xtemp = xax[i]
+                    xax[i] = xax[i+1]
+                    xax[i+1] = xtemp
+                    ytemp = yax[i]
+                    yax[i] = yax[i + 1]
+                    yax[i + 1] = ytemp
+
+        print(xax)
+        print(yax)
+        use = np.zeros((200, 2))
+        flag = 0
+
+
+        ax1.scatter(yax[:], xax[:], marker = "x", label = "I = {}0A".format(I_choose))
+
+        temp = scps.linregress(yax, xax)
+
+        print("The gradient is {}±{} and the y-interception is {}±{}.".format(temp.slope, temp.stderr, temp.intercept, temp.intercept_stderr))
+        lsfy = np.arange(80, 270, 10)
+        lsfx = (lsfy - temp.intercept)/temp.slope
+
+        ax1.plot(lsfx, lsfy, label = "Least square fit", color = "green")
+
+        e = 1.601 / 10**19
+        eg = -(temp.intercept/temp.slope) * e / 1.601 * 10**19
+        print(eg)
+        egerr = eg * np.sqrt((temp.stderr/temp.slope)**2 + ((temp.intercept_stderr/temp.intercept)**2))
+        print(egerr)
+        current_test.append([I_choose, eg, egerr])
+
+
+
+ix = []
+iy = []
+iyerr = []
+for i in range(len(current_test)):
+    ix.append(current_test[i][0])
+    iy.append(current_test[i][1])
+    iyerr.append(current_test[i][2])
+
+
+
+#ax1.errorbar(ix, iy, xerr = 0.001, yerr = iyerr, capsize = 3, label = "experiment value")
+
+
+temp = scps.linregress(ix, iy)
+print(temp)
+xt = [0, 0.1]
+yt = [temp.intercept, temp.slope * 0.1 + temp.intercept]
+#ax1.plot(xt, yt, label = "least square fit")
+plt.legend()
 plt.show()
-"""
-
-        plt.plot(V[60:150], R[60:150], marker="", label="{}".format(counter * 10 + 70))
-
-        plt.title("relations between voltage and resistance under different temperature")
-        plt.xlabel("voltage/V")
-        plt.ylabel("Resistance/R")
-        plt.legend()
-    data = []
-
-fig1.show()
-
-        fig1 = plt.figure()
-        ax1 = fig1.add_axes([0.1, 0.1, 0.8, 0.4])
-        ax2 = fig1.add_axes([0.1, 0.5, 0.8, 0.4])
-        #ax3 = fig1.add_axes([0.1, 0.7, 0.8, 0.3])
-
-        #ax1.plot(range(0, length), V, label = "voltage", color = "red")
-        #plt.legend()
-
-        ax2.plot(R[0:30], I[1:30], label = "I-V", color = "blue")
-        plt.legend()
-
-        ax1.plot(R[20:50], label = "resistance", color = "green")
-        plt.legend()
-        plt.show()"""

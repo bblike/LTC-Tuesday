@@ -43,7 +43,7 @@ for file in files:
             print(R)"""
 
 
-            plt.plot(V[60:150], R[60:150], marker="", label = "T = {}K".format(s))
+            plt.plot(I[60:150], R[60:150], marker="", label = "T = {}K".format(s))
 
 
             plt.title("relations between voltage and resistance under different temperature")
