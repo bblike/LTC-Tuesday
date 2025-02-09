@@ -56,7 +56,7 @@ Files are saved in three locations:
     ```python
     mm['To'] = "YourName<your_email@gmail.com>"
     ```
-- **To disable email notifications**, delete everything after **line 170**.  
+- **To disable email notifications**, delete or comment everything after **line 170**.  
 
 ---
 
@@ -71,12 +71,12 @@ python measureltVnew.py n_pts
 - The program automatically generates filenames in the format:
 
   ```
-  TxxxVx.dat
+  TaaaVb.dat
   ```
 
   where:
-  - `xxx` = Temperature in Kelvin  
-  - `x` = Experiment sequence  
+  - `aaa` = Temperature in Kelvin  
+  - `b` = Experiment sequence  
 
 ---
 
