@@ -20,7 +20,7 @@ Files are saved in three locations:
 
 ---
 
-## Notes for Shay
+## Notes for running
 
 ### 1. Device Connection & Pre-settings
 - **Lines 1–56**: Connects devices and sets initial parameters.
