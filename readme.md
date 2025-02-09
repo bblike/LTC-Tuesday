@@ -10,7 +10,7 @@ where n-pts is the suitable number that holds:
 and it will automaticly generate results of measurements.
 Files are saved on 3 side, 1 SSD, 1 computer and 1 github program.
 
-#Notes for Shay:
+##Notes for Shay:
 1.Line 1 to 56: connecting devices and pre setting
 2.Line 60 to 80: temperature setting, it will pause the experiment until the temperature change to objective temperature
 3.Line 81 to 130: setting current and voltage and take reading. Some reference used:
@@ -37,3 +37,5 @@ Files are saved on 3 side, 1 SSD, 1 computer and 1 github program.
 	(you do not need to name the file name, as it will automaticly generate name in form "TxxxVx.dat", with xxx reprecent the Kelvin temperature and x represent the sequence of experiment)
 
 Open for read and communication.
+
+---
