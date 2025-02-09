@@ -1,41 +1,83 @@
-------
-#Run measureltVnew.py by:
+# Running `measureltVnew.py`
 
->>> python measureltVnew.py n-pts
- 
-where n-pts is the suitable number that holds:
+To execute the script, use the following command:
 
->>> Voltage = 0.01 * n_pts + 0.1
+```sh
+python measureltVnew.py n-pts
+```
 
-and it will automaticly generate results of measurements.
-Files are saved on 3 side, 1 SSD, 1 computer and 1 github program.
+where `n-pts` is determined by:
 
-##Notes for Shay:
-1.Line 1 to 56: connecting devices and pre setting
-2.Line 60 to 80: temperature setting, it will pause the experiment until the temperature change to objective temperature
-3.Line 81 to 130: setting current and voltage and take reading. Some reference used:
-	limiter: reference to break the experiment it current hit the limit of power supply.
-	vinit: beginning voltage, value set in line 147
-	vstep: voltage step, value set in line 148
-4.Line 132 to 168: main part, control the program. Some reference used:
-	Vinit: initial voltage
-	Vstep: voltage steps
-	Object_temp: temperature to be measured at
-	n_pts: numbers of data to be tested, need input(The program can automaticly stop running when the current across 0.1A so this number can be as large as possible)
-	*Line 156 and line 189 sets the number of experiment to go, range(1,4) means it will repeat 3 times at each temperature.
-	*change of these two lines should run together or error would occur. 
-5.Line 170 to end: email sending part
-	for this part, I use my own email as sender and you only need to change line 174:
-		mail_receivers = ["sample_email@gmail.com"]
-	and line 180:
-	mm['To'] = "sample<sample_email@gmail.com>"
-	to replace the email to your own email and replace "sample" to your name. It will generate a email and send to your email account with all data collected.
-	If you do not want this function, just delete all after line 170 and it will have no influence to data collection.
-6.Code to run this file:
-	use command line to go to the path, using following code:
-		python measureltVnew.py n_pts
-	(you do not need to name the file name, as it will automaticly generate name in form "TxxxVx.dat", with xxx reprecent the Kelvin temperature and x represent the sequence of experiment)
+```sh
+Voltage = 0.01 * n_pts + 0.1
+```
 
-Open for read and communication.
+The script will automatically generate measurement results.  
+Files are saved in three locations:
+- **SSD**
+- **Computer**
+- **GitHub repository**
 
 ---
+
+## Notes for Shay
+
+### 1. Device Connection & Pre-settings
+- **Lines 1–56**: Connects devices and sets initial parameters.
+
+### 2. Temperature Control
+- **Lines 60–80**: The experiment pauses until the temperature reaches the target.
+
+### 3. Current, Voltage & Readings
+- **Lines 81–130**:  
+  - **`limiter`**: Stops the experiment if current exceeds the power supply limit.  
+  - **`vinit`**: Initial voltage (set in **line 147**).  
+  - **`vstep`**: Voltage step size (set in **line 148**).  
+
+### 4. Main Experiment Control
+- **Lines 132–168**:
+  - **`Vinit`**: Initial voltage.  
+  - **`Vstep`**: Voltage step size.  
+  - **`Object_temp`**: Target measurement temperature.  
+  - **`n_pts`**: Number of data points (program stops if current exceeds 0.1A).  
+  - **Loop Control**:  
+    - **Line 156 & Line 189** set the number of experiment repetitions.  
+    - Default: `range(1,4)` (repeats 3 times per temperature).  
+    - **⚠️ Change both lines together to avoid errors.**  
+
+### 5. Email Notification (Optional)
+- **Lines 170–end**: Sends collected data via email.  
+- To configure:
+  - **Line 174**: Replace with your email:
+    ```python
+    mail_receivers = ["your_email@gmail.com"]
+    ```
+  - **Line 180**: Replace `"sample"` and email:
+    ```python
+    mm['To'] = "YourName<your_email@gmail.com>"
+    ```
+- **To disable email notifications**, delete everything after **line 170**.  
+
+---
+
+## Running the Script
+Navigate to the script directory in the command line and run:
+
+```sh
+python measureltVnew.py n_pts
+```
+
+- No need to specify a filename.
+- The program automatically generates filenames in the format:
+
+  ```
+  TxxxVx.dat
+  ```
+
+  where:
+  - `xxx` = Temperature in Kelvin  
+  - `x` = Experiment sequence  
+
+---
+
+📖 **Open for reading and communication.**
